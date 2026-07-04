@@ -1,3 +1,7 @@
+import type {
+  MissingFieldInheritance,
+  MissingInheritanceStatus,
+} from '@/components/PagePresets/missingFieldInheritance'
 import type { References } from '@/schemaRuntimeDereference'
 
 export type RawPresets = Record<string, RawPreset>
@@ -81,6 +85,9 @@ export type DenormalizedPreset = {
   hasIcon: boolean
   /** Preset has an `icon` field but no matching asset in the icon library. */
   iconBroken: boolean
+  /** Slash-parent field lists omitted deliberately on an explicit `fields` / `moreFields` array. */
+  missingFieldInheritance: MissingFieldInheritance | null
+  missingInheritanceStatus: MissingInheritanceStatus
   searchable?: boolean
 }
 

@@ -1,6 +1,11 @@
 import { isPresetIconBroken } from '@/components/PageIcons/iconRegistry'
+import {
+  detectMissingFieldInheritance,
+  resolveMissingInheritanceStatus,
+} from '@/components/PagePresets/missingFieldInheritance'
 import { resolvePresetFieldList } from '@/components/PagePresets/presetFieldInheritance'
 import { nameRefFromRaw } from '@/components/PagePresets/presetLabelInheritance'
+import { missingInheritanceOverrides } from '@/data/missingInheritanceOverrides'
 import type {
   DenormalizedPreset,
   RawCategories,
@@ -152,6 +157,11 @@ export function denormalize(
     const categoryNamesList = categoryIds.map((cid) => categoryNames[cid] ?? cid)
 
     const iconBroken = isPresetIconBroken(icon)
+    const missingFieldInheritance = detectMissingFieldInheritance(id, r, presets, fields)
+    const missingInheritanceStatus = resolveMissingInheritanceStatus(
+      missingFieldInheritance,
+      missingInheritanceOverrides.presets[id],
+    )
 
     result.push({
       id,
@@ -173,6 +183,8 @@ export function denormalize(
       matchScore: r.matchScore ?? 1,
       hasIcon: Boolean(icon || imageURL),
       iconBroken,
+      missingFieldInheritance,
+      missingInheritanceStatus,
       searchable: r.searchable !== false,
     })
   }

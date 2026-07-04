@@ -24,6 +24,16 @@ export function PagePresets() {
     () => data?.presets.filter((preset) => preset.iconBroken).length ?? 0,
     [data],
   )
+  const unreviewedMissingInheritanceCount = useMemo(
+    () =>
+      data?.presets.filter((preset) => preset.missingInheritanceStatus === 'unreviewed').length ??
+      0,
+    [data],
+  )
+  const staleMissingInheritanceCount = useMemo(
+    () => data?.presets.filter((preset) => preset.missingInheritanceStatus === 'stale').length ?? 0,
+    [data],
+  )
 
   const handleLoad = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
@@ -46,6 +56,7 @@ export function PagePresets() {
     iconName: 'icons',
     iconPrefix: 'icons',
     hasIcon: 'icons',
+    missingInheritance: 'fields',
   }
 
   const activePills = [
@@ -96,6 +107,12 @@ export function PagePresets() {
       facet: 'hasIcon',
       label: `Has icon: ${value}`,
       onRemove: () => removeValue('hasIcon', value),
+    })),
+    ...searchState.missingInheritance.map((value) => ({
+      key: `missingInheritance-${value}`,
+      facet: 'missingInheritance',
+      label: `Field inheritance: ${value}`,
+      onRemove: () => removeValue('missingInheritance', value),
     })),
     ...searchState.iconName.map((value) => ({
       key: `iconName-${value}`,
@@ -224,6 +241,35 @@ export function PagePresets() {
             className={brandAccent.errorBannerLink}
           >
             show broken preset icons
+          </button>
+          .
+        </p>
+      ) : null}
+      {unreviewedMissingInheritanceCount > 0 ? (
+        <p className={brandAccent.errorBanner}>
+          <strong>{unreviewedMissingInheritanceCount}</strong>{' '}
+          {unreviewedMissingInheritanceCount === 1 ? 'preset has' : 'presets have'} unreviewed
+          missing slash-parent field inheritance —{' '}
+          <button
+            type="button"
+            onClick={() => setSearchState({ missingInheritance: ['unreviewed'], page: 1 })}
+            className={brandAccent.errorBannerLink}
+          >
+            show unreviewed
+          </button>
+          .
+        </p>
+      ) : null}
+      {staleMissingInheritanceCount > 0 ? (
+        <p className={brandAccent.errorBanner}>
+          <strong>{staleMissingInheritanceCount}</strong>{' '}
+          {staleMissingInheritanceCount === 1 ? 'override is' : 'overrides are'} stale —{' '}
+          <button
+            type="button"
+            onClick={() => setSearchState({ missingInheritance: ['stale'], page: 1 })}
+            className={brandAccent.errorBannerLink}
+          >
+            show stale overrides
           </button>
           .
         </p>

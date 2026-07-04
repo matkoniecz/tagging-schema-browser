@@ -11,6 +11,7 @@ type PresetSearchRecord = DenormalizedPreset & {
   moreFieldIds: string[]
   iconName: string
   hasIconFacet: 'yes' | 'no' | 'broken'
+  missingInheritanceFacet: DenormalizedPreset['missingInheritanceStatus']
 }
 
 function toItemsJsRecords(presets: DenormalizedPreset[]): Record<string, unknown>[] {
@@ -27,6 +28,7 @@ function toItemsJsRecords(presets: DenormalizedPreset[]): Record<string, unknown
     iconName: p.icon ?? '',
     iconPrefix: p.iconPrefix ?? 'none',
     hasIconFacet: p.iconBroken ? 'broken' : p.hasIcon ? 'yes' : 'no',
+    missingInheritanceFacet: p.missingInheritanceStatus,
   }))
 }
 
@@ -54,6 +56,7 @@ const itemsJsConfig = {
       conjunction: false,
     },
     hasIconFacet: { title: 'Has icon', size: 3 },
+    missingInheritanceFacet: { title: 'Field inheritance', size: 4 },
   },
   sortings: {
     name_asc: { field: 'name', order: 'asc' },
@@ -108,6 +111,10 @@ export function searchPresets(params: {
     mappedFilters.hasIconFacet = mappedFilters.hasIcon
     mappedFilters.hasIcon = []
   }
+  if (mappedFilters.missingInheritance) {
+    mappedFilters.missingInheritanceFacet = mappedFilters.missingInheritance
+    mappedFilters.missingInheritance = []
+  }
   const query = params.query ?? ''
   const useCustomTextFilter = query.trim().length > 0
   const result = engine.search({
@@ -142,6 +149,7 @@ export function searchPresets(params: {
           termsText,
           aliasesText,
           hasIconFacet,
+          missingInheritanceFacet,
           fieldText,
           fieldIds,
           primaryFieldIds,
@@ -152,6 +160,7 @@ export function searchPresets(params: {
         void termsText
         void aliasesText
         void hasIconFacet
+        void missingInheritanceFacet
         void fieldText
         void fieldIds
         void primaryFieldIds
@@ -163,14 +172,20 @@ export function searchPresets(params: {
       per_page: perPage,
       page,
     },
-    aggregations:
-      aggregations && 'hasIconFacet' in aggregations
-        ? {
-            ...aggregations,
-            hasIcon: (
-              aggregations as Record<string, { buckets: { key: string; doc_count: number }[] }>
-            ).hasIconFacet,
-          }
-        : aggregations,
+    aggregations: (() => {
+      const mapped = { ...aggregations } as Record<
+        string,
+        { buckets: { key: string; doc_count: number }[] }
+      >
+      if ('hasIconFacet' in mapped) {
+        mapped.hasIcon = mapped.hasIconFacet
+        delete mapped.hasIconFacet
+      }
+      if ('missingInheritanceFacet' in mapped) {
+        mapped.missingInheritance = mapped.missingInheritanceFacet
+        delete mapped.missingInheritanceFacet
+      }
+      return mapped
+    })(),
   }
 }

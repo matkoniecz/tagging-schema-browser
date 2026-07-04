@@ -23,6 +23,8 @@ function preset(id: string, name: string): DenormalizedPreset {
     matchScore: 0,
     hasIcon: false,
     iconBroken: false,
+    missingFieldInheritance: null,
+    missingInheritanceStatus: 'none',
   }
 }
 
