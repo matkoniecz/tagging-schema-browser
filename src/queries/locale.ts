@@ -1,6 +1,6 @@
 import { type References, dereferenceLocaleStrings } from '@/schemaRuntimeDereference'
 import { isBundledTestSchemaUrl } from '@/utils/constants'
-import { fetchSchemaJson } from '@/utils/schemaFetch'
+import { fetchSchemaJson, schemaFetchNeedsCorsProxy } from '@/utils/schemaFetch'
 import type { FieldTranslations } from '@/utils/types'
 
 export type LocaleEntry = { name?: string; terms: string[]; aliases: string[] }
@@ -93,16 +93,6 @@ async function discoverLocalesFromJsDelivr(pkg: string, version: string): Promis
 
 /** Discover locale codes from the dist's translations/ folder. */
 export async function discoverLocales(dataUrl: string): Promise<string[]> {
-  try {
-    const manifestRes = await fetch(`${ensureSlash(dataUrl)}translations/locales.json`)
-    if (manifestRes.ok) {
-      const list = (await manifestRes.json()) as string[]
-      return list.filter((code) => code !== 'en').sort((a, b) => a.localeCompare(b))
-    }
-  } catch {
-    // continue
-  }
-
   if (isBundledTestSchemaUrl(dataUrl)) {
     return []
   }
@@ -117,7 +107,17 @@ export async function discoverLocales(dataUrl: string): Promise<string[]> {
     }
   }
 
-  return FALLBACK_LOCALES
+  // Netlify staging / PR previews do not ship translations/locales.json.
+  if (schemaFetchNeedsCorsProxy(dataUrl)) {
+    return FALLBACK_LOCALES
+  }
+
+  try {
+    const list = await fetchSchemaJson<string[]>(`${ensureSlash(dataUrl)}translations/locales.json`)
+    return list.filter((code) => code !== 'en').sort((a, b) => a.localeCompare(b))
+  } catch {
+    return FALLBACK_LOCALES
+  }
 }
 
 async function loadLocale(
