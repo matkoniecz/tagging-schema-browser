@@ -27,8 +27,14 @@ const useReferenceStore = create<ReferenceStore>()(
       },
     }),
     {
-      name: 'tagging-schema-browser-reference-v2',
+      name: 'tagging-schema-browser-reference',
       partialize: (state) => ({ reference: state.reference }),
+      migrate: (persisted) => {
+        const state = persisted as { reference?: string }
+        if (state.reference === 'interem') return { reference: 'interim' as const }
+        return persisted
+      },
+      version: 1,
     },
   ),
 )
