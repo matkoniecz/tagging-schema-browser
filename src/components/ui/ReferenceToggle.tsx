@@ -73,8 +73,8 @@ export function ReferenceToggle() {
           }
           title={
             stagingUpdatedAt
-              ? `Unreleased — last change on main: ${new Date(stagingUpdatedAt).toLocaleString()}`
-              : 'Unreleased — build from main, not yet published'
+              ? `Unreleased — last change on interim: ${new Date(stagingUpdatedAt).toLocaleString()}`
+              : 'Unreleased — build from interim, not yet published'
           }
         >
           Unreleased{unreleasedAge ? ` · ${unreleasedAge}` : ''}

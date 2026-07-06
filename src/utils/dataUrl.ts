@@ -1,4 +1,4 @@
-import { INTEREM_DATA_URL, RELEASE_DATA_URL } from '@/utils/constants'
+import { INTERIM_DATA_URL, RELEASE_DATA_URL } from '@/utils/constants'
 
 export type SchemaReference = 'release' | 'interem'
 
@@ -10,12 +10,12 @@ function ensureSlash(url: string): string {
 export function isCanonicalDataUrl(url: string): boolean {
   const normalized = ensureSlash(url)
   return (
-    normalized === ensureSlash(RELEASE_DATA_URL) || normalized === ensureSlash(INTEREM_DATA_URL)
+    normalized === ensureSlash(RELEASE_DATA_URL) || normalized === ensureSlash(INTERIM_DATA_URL)
   )
 }
 
 export function dataUrlForReference(reference: SchemaReference): string {
-  return reference === 'interem' ? INTEREM_DATA_URL : RELEASE_DATA_URL
+  return reference === 'interem' ? INTERIM_DATA_URL : RELEASE_DATA_URL
 }
 
 /** URL `reference=release` wins; otherwise use persisted preference (default interem). */
@@ -35,7 +35,7 @@ export function referenceSearchParam(reference: SchemaReference): SchemaReferenc
 
 /**
  * `reference=release` with a non-release `dataUrl`: browse the published release and compare
- * against that baseline (staging main or a PR preview URL).
+ * against that baseline (interim dist or a PR preview URL).
  */
 export function isReleaseCompareMode(dataUrl: string, reference: SchemaReference): boolean {
   const trimmed = dataUrl.trim()
@@ -61,13 +61,13 @@ export function resolveCompareBaselineUrl(
   const trimmed = dataUrl.trim()
   if (!trimmed) return null
   if (isReleaseCompareMode(trimmed, reference)) return ensureSlash(trimmed)
-  if (!isCanonicalDataUrl(trimmed)) return INTEREM_DATA_URL
+  if (!isCanonicalDataUrl(trimmed)) return INTERIM_DATA_URL
   return null
 }
 
 /** Short UI label for the comparison baseline. */
 export function compareBaselineLabel(baselineUrl: string): string {
-  if (ensureSlash(baselineUrl) === ensureSlash(INTEREM_DATA_URL)) return 'staging'
+  if (ensureSlash(baselineUrl) === ensureSlash(INTERIM_DATA_URL)) return 'staging'
   try {
     return new URL(baselineUrl).hostname
   } catch {

@@ -1,8 +1,8 @@
 const NPM_RESOLVE_URL =
   'https://data.jsdelivr.com/v1/packages/npm/@openstreetmap/id-tagging-schema/resolved?specifier=latest'
 
-const GITHUB_MAIN_COMMIT_URL =
-  'https://api.github.com/repos/openstreetmap/id-tagging-schema/commits/main'
+const GITHUB_INTERIM_COMMIT_URL =
+  'https://api.github.com/repos/openstreetmap/id-tagging-schema/commits/interim'
 
 /** Resolve the concrete npm release behind `@latest` (e.g. "6.18.0"). */
 export async function resolveReleaseVersion(): Promise<string | null> {
@@ -16,10 +16,10 @@ export async function resolveReleaseVersion(): Promise<string | null> {
   }
 }
 
-/** ISO timestamp of the latest commit on id-tagging-schema `main` (staging dist source). */
+/** ISO timestamp of the latest commit on id-tagging-schema `interim` (unreleased dist source). */
 export async function resolveStagingUpdatedAt(): Promise<string | null> {
   try {
-    const res = await fetch(GITHUB_MAIN_COMMIT_URL, {
+    const res = await fetch(GITHUB_INTERIM_COMMIT_URL, {
       headers: { Accept: 'application/vnd.github+json' },
     })
     if (!res.ok) return null
@@ -30,7 +30,7 @@ export async function resolveStagingUpdatedAt(): Promise<string | null> {
   }
 }
 
-/** Compact label for the staging toggle — last `main` update, not package version. */
+/** Compact label for the unreleased toggle — last `interim` update, not package version. */
 export function formatStagingUpdatedAt(iso: string | null): string | null {
   if (!iso) return null
   const updated = new Date(iso)

@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest'
-import { INTEREM_DATA_URL, RELEASE_DATA_URL } from './constants'
+import { INTERIM_DATA_URL, RELEASE_DATA_URL } from './constants'
 import {
   dataUrlForReference,
   isCanonicalDataUrl,
@@ -24,7 +24,7 @@ describe('resolveSchemaReference', () => {
 
 describe('resolveActiveDataUrl', () => {
   it('uses canonical interem when dataUrl is empty', () => {
-    expect(resolveActiveDataUrl('', 'interem')).toBe(INTEREM_DATA_URL)
+    expect(resolveActiveDataUrl('', 'interem')).toBe(INTERIM_DATA_URL)
   })
 
   it('uses custom dataUrl when set', () => {
@@ -49,7 +49,7 @@ describe('referenceSearchParam', () => {
 describe('isCanonicalDataUrl', () => {
   it('recognizes release and interem URLs', () => {
     expect(isCanonicalDataUrl(RELEASE_DATA_URL)).toBe(true)
-    expect(isCanonicalDataUrl(INTEREM_DATA_URL)).toBe(true)
+    expect(isCanonicalDataUrl(INTERIM_DATA_URL)).toBe(true)
     expect(isCanonicalDataUrl('https://preview.example/dist/')).toBe(false)
   })
 })
@@ -64,7 +64,7 @@ describe('resolveCompareBaselineUrl', () => {
 
   it('returns interem for custom preview builds', () => {
     expect(resolveCompareBaselineUrl('https://preview.example/dist/', 'interem')).toBe(
-      INTEREM_DATA_URL,
+      INTERIM_DATA_URL,
     )
   })
 
@@ -77,6 +77,6 @@ describe('resolveCompareBaselineUrl', () => {
 describe('dataUrlForReference', () => {
   it('maps reference to dist URL', () => {
     expect(dataUrlForReference('release')).toBe(RELEASE_DATA_URL)
-    expect(dataUrlForReference('interem')).toBe(INTEREM_DATA_URL)
+    expect(dataUrlForReference('interem')).toBe(INTERIM_DATA_URL)
   })
 })

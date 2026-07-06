@@ -5,7 +5,7 @@ import { presetSearchDefaults } from '@/components/PagePresets/useSearchState'
 import { Input } from '@/components/ui/Input'
 import { areaAccent } from '@/theme/areaAccent'
 import { externalLinkClass } from '@/theme/externalAccent'
-import { INTEREM_DATA_URL } from '@/utils/constants'
+import { INTERIM_DATA_URL } from '@/utils/constants'
 import { deriveDataUrl } from '@/utils/deriveDataUrl'
 
 function ColorDot({ halo, dot }: { halo: string; dot: string }) {
@@ -27,7 +27,7 @@ function ColorLegendItem({ halo, dot, text }: { halo: string; dot: string; text:
 
 /** Staging URL in the input → open release compared against that baseline. */
 function ReleaseStagingCompare() {
-  const [input, setInput] = useState(INTEREM_DATA_URL)
+  const [input, setInput] = useState(INTERIM_DATA_URL)
   const baselineUrl = useMemo(() => deriveDataUrl(input), [input])
 
   return (
@@ -124,8 +124,8 @@ export function PageAbout() {
       <h2>Release vs staging</h2>
       <p>
         Use the toggle under the logo to switch between <strong>staging</strong> — the default,
-        latest unreleased build from id-tagging-schema <code>main</code> (labeled with when{' '}
-        <code>main</code> last changed) — and the published <strong>release</strong> (npm{' '}
+        latest unreleased build from id-tagging-schema <code>interim</code> (labeled with when{' '}
+        <code>interim</code> last changed) — and the published <strong>release</strong> (npm{' '}
         <code>@latest</code>, with its version number). Deep-link the release with{' '}
         <code>?reference=release</code>. Your last choice is remembered in the browser.
       </p>

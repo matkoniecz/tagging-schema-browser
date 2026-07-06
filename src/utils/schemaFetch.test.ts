@@ -2,18 +2,18 @@ import { describe, expect, it } from 'vitest'
 import { schemaFetchNeedsCorsProxy } from './schemaFetch'
 
 describe('schemaFetchNeedsCorsProxy', () => {
-  it('requires proxy for iD staging on Netlify', () => {
-    expect(
-      schemaFetchNeedsCorsProxy(
-        'https://ideditor.netlify.app/id-tagging-schema/dist/presets.min.json',
-      ),
-    ).toBe(true)
-  })
-
   it('requires proxy for Netlify PR preview hosts', () => {
     expect(
       schemaFetchNeedsCorsProxy('https://deploy-preview-123--id-tagging-schema.netlify.app/dist/'),
     ).toBe(true)
+  })
+
+  it('does not require proxy for GitHub Pages interim dist', () => {
+    expect(
+      schemaFetchNeedsCorsProxy(
+        'https://openstreetmap.github.io/id-tagging-schema/dist/presets.min.json',
+      ),
+    ).toBe(false)
   })
 
   it('does not require proxy for jsDelivr release dist', () => {
