@@ -82,7 +82,7 @@ const rootSearchSchema = z.object({
   dataUrl: z.string().catch(''),
   /** Global comparison locale (used by the Translations page + preset details). */
   locale: z.string().catch(''),
-  /** Canonical dataset when `dataUrl` is empty: npm release or interim staging. */
+  /** Canonical dataset when `dataUrl` is empty: npm release or unreleased main. */
   reference: z.enum(['release', 'interim']).optional().catch(undefined),
 })
 type RootSearch = z.infer<typeof rootSearchSchema>
@@ -95,7 +95,7 @@ function RootContent() {
   const { setReference: setPersistedReference } = useReferenceActions()
   const location = useLocation()
 
-  // URL `reference=release` wins; otherwise fall back to persisted preference (default interim).
+  // URL `reference=release` wins; otherwise fall back to persisted preference (default unreleased).
   const reference = resolveSchemaReference(urlReference, persistedReference)
 
   useEffect(

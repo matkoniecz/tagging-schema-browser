@@ -1,7 +1,7 @@
 export const RELEASE_DATA_URL =
   'https://cdn.jsdelivr.net/npm/@openstreetmap/id-tagging-schema@latest/dist'
 
-/** Latest pre-release dist built from id-tagging-schema `interim` (GitHub Pages). */
+/** Latest pre-release dist built from id-tagging-schema `main` (GitHub Pages). */
 export const INTERIM_DATA_URL = 'https://openstreetmap.github.io/id-tagging-schema/dist/'
 
 /** Same-origin fixture in `public/test-schema/` (Playwright e2e via `?dataUrl=/test-schema`). */

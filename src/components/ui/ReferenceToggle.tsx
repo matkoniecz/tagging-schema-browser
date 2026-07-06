@@ -2,7 +2,7 @@ import { useSearch } from '@tanstack/react-router'
 import { LayoutGroup, motion } from 'motion/react'
 import { useComparison } from '@/hooks/useComparison'
 import { useReferenceSwitch } from '@/hooks/useReferenceSwitch'
-import { formatStagingUpdatedAt } from '@/utils/schemaVersion'
+import { formatUnreleasedUpdatedAt } from '@/utils/schemaVersion'
 import { cn } from '@/utils/tw'
 
 function ToggleSegment({
@@ -48,8 +48,8 @@ function ToggleSegment({
  * Hidden while a custom `dataUrl` (PR preview) is active.
  */
 export function ReferenceToggle() {
-  const { releaseVersion, stagingUpdatedAt } = useComparison()
-  const unreleasedAge = formatStagingUpdatedAt(stagingUpdatedAt)
+  const { releaseVersion, unreleasedUpdatedAt } = useComparison()
+  const unreleasedAge = formatUnreleasedUpdatedAt(unreleasedUpdatedAt)
   const dataUrl = useSearch({ strict: false, select: (s) => s.dataUrl ?? '' })
   const { displayReference, select, onPillAnimationComplete, isSwitching } = useReferenceSwitch()
 
@@ -72,9 +72,9 @@ export function ReferenceToggle() {
             isSwitching && displayReference === 'interim' ? onPillAnimationComplete : undefined
           }
           title={
-            stagingUpdatedAt
-              ? `Unreleased — last change on interim: ${new Date(stagingUpdatedAt).toLocaleString()}`
-              : 'Unreleased — build from interim, not yet published'
+            unreleasedUpdatedAt
+              ? `Unreleased — last change on main: ${new Date(unreleasedUpdatedAt).toLocaleString()}`
+              : 'Unreleased — latest id-tagging-schema main, not yet published'
           }
         >
           Unreleased{unreleasedAge ? ` · ${unreleasedAge}` : ''}

@@ -67,7 +67,7 @@ export function resolveCompareBaselineUrl(
 
 /** Short UI label for the comparison baseline. */
 export function compareBaselineLabel(baselineUrl: string): string {
-  if (ensureSlash(baselineUrl) === ensureSlash(INTERIM_DATA_URL)) return 'staging'
+  if (ensureSlash(baselineUrl) === ensureSlash(INTERIM_DATA_URL)) return 'unreleased'
   try {
     return new URL(baselineUrl).hostname
   } catch {
