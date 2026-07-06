@@ -12,24 +12,24 @@ import {
 
 describe('resolveSchemaReference', () => {
   it('prefers explicit URL reference over persisted', () => {
-    expect(resolveSchemaReference('release', 'interem')).toBe('release')
-    expect(resolveSchemaReference('interem', 'release')).toBe('interem')
+    expect(resolveSchemaReference('release', 'interim')).toBe('release')
+    expect(resolveSchemaReference('interim', 'release')).toBe('interim')
   })
 
   it('falls back to persisted when URL omits reference', () => {
-    expect(resolveSchemaReference(undefined, 'interem')).toBe('interem')
+    expect(resolveSchemaReference(undefined, 'interim')).toBe('interim')
     expect(resolveSchemaReference(undefined, 'release')).toBe('release')
   })
 })
 
 describe('resolveActiveDataUrl', () => {
-  it('uses canonical interem when dataUrl is empty', () => {
-    expect(resolveActiveDataUrl('', 'interem')).toBe(INTERIM_DATA_URL)
+  it('uses canonical interim when dataUrl is empty', () => {
+    expect(resolveActiveDataUrl('', 'interim')).toBe(INTERIM_DATA_URL)
   })
 
   it('uses custom dataUrl when set', () => {
     const custom = 'https://example.com/dist/'
-    expect(resolveActiveDataUrl(custom, 'interem')).toBe(custom)
+    expect(resolveActiveDataUrl(custom, 'interim')).toBe(custom)
   })
 
   it('switches to release dist in release-compare mode', () => {
@@ -40,14 +40,14 @@ describe('resolveActiveDataUrl', () => {
 })
 
 describe('referenceSearchParam', () => {
-  it('omits param for interem default', () => {
-    expect(referenceSearchParam('interem')).toBeUndefined()
+  it('omits param for interim default', () => {
+    expect(referenceSearchParam('interim')).toBeUndefined()
     expect(referenceSearchParam('release')).toBe('release')
   })
 })
 
 describe('isCanonicalDataUrl', () => {
-  it('recognizes release and interem URLs', () => {
+  it('recognizes release and interim URLs', () => {
     expect(isCanonicalDataUrl(RELEASE_DATA_URL)).toBe(true)
     expect(isCanonicalDataUrl(INTERIM_DATA_URL)).toBe(true)
     expect(isCanonicalDataUrl('https://preview.example/dist/')).toBe(false)
@@ -62,14 +62,14 @@ describe('resolveCompareBaselineUrl', () => {
     )
   })
 
-  it('returns interem for custom preview builds', () => {
-    expect(resolveCompareBaselineUrl('https://preview.example/dist/', 'interem')).toBe(
+  it('returns interim for custom preview builds', () => {
+    expect(resolveCompareBaselineUrl('https://preview.example/dist/', 'interim')).toBe(
       INTERIM_DATA_URL,
     )
   })
 
   it('returns null on canonical datasets', () => {
-    expect(resolveCompareBaselineUrl('', 'interem')).toBeNull()
+    expect(resolveCompareBaselineUrl('', 'interim')).toBeNull()
     expect(resolveCompareBaselineUrl(RELEASE_DATA_URL, 'release')).toBeNull()
   })
 })
@@ -77,6 +77,6 @@ describe('resolveCompareBaselineUrl', () => {
 describe('dataUrlForReference', () => {
   it('maps reference to dist URL', () => {
     expect(dataUrlForReference('release')).toBe(RELEASE_DATA_URL)
-    expect(dataUrlForReference('interem')).toBe(INTERIM_DATA_URL)
+    expect(dataUrlForReference('interim')).toBe(INTERIM_DATA_URL)
   })
 })

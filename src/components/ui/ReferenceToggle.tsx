@@ -66,10 +66,10 @@ export function ReferenceToggle() {
         onKeyDown={(e) => e.stopPropagation()}
       >
         <ToggleSegment
-          active={displayReference === 'interem'}
-          onClick={() => select('interem')}
+          active={displayReference === 'interim'}
+          onClick={() => select('interim')}
           onPillAnimationComplete={
-            isSwitching && displayReference === 'interem' ? onPillAnimationComplete : undefined
+            isSwitching && displayReference === 'interim' ? onPillAnimationComplete : undefined
           }
           title={
             stagingUpdatedAt

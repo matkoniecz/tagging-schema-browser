@@ -14,7 +14,7 @@ export function useSchema() {
 
   const reference = resolveSchemaReference(
     urlReference,
-    hasHydrated ? persistedReference : 'interem',
+    hasHydrated ? persistedReference : 'interim',
   )
   const resolvedDataUrl = resolveActiveDataUrl(dataUrlParam, reference)
 

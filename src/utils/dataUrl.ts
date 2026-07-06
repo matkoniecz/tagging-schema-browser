@@ -1,12 +1,12 @@
 import { INTERIM_DATA_URL, RELEASE_DATA_URL } from '@/utils/constants'
 
-export type SchemaReference = 'release' | 'interem'
+export type SchemaReference = 'release' | 'interim'
 
 function ensureSlash(url: string): string {
   return url.endsWith('/') ? url : `${url}/`
 }
 
-/** True when the URL is a built-in release or interem dataset (not a custom PR preview). */
+/** True when the URL is a built-in release or interim dataset (not a custom PR preview). */
 export function isCanonicalDataUrl(url: string): boolean {
   const normalized = ensureSlash(url)
   return (
@@ -15,20 +15,20 @@ export function isCanonicalDataUrl(url: string): boolean {
 }
 
 export function dataUrlForReference(reference: SchemaReference): string {
-  return reference === 'interem' ? INTERIM_DATA_URL : RELEASE_DATA_URL
+  return reference === 'interim' ? INTERIM_DATA_URL : RELEASE_DATA_URL
 }
 
-/** URL `reference=release` wins; otherwise use persisted preference (default interem). */
+/** URL `reference=release` wins; otherwise use persisted preference (default interim). */
 export function resolveSchemaReference(
   urlReference: SchemaReference | undefined,
   persistedReference: SchemaReference,
 ): SchemaReference {
   if (urlReference === 'release') return 'release'
-  if (urlReference === 'interem') return 'interem'
+  if (urlReference === 'interim') return 'interim'
   return persistedReference
 }
 
-/** Param value when switching reference via the header toggle (interem omits the param). */
+/** Param value when switching reference via the header toggle (interim omits the param). */
 export function referenceSearchParam(reference: SchemaReference): SchemaReference | undefined {
   return reference === 'release' ? 'release' : undefined
 }

@@ -17,7 +17,7 @@ interface ReferenceStore {
 const useReferenceStore = create<ReferenceStore>()(
   persist(
     (set) => ({
-      reference: 'interem',
+      reference: 'interim',
       pendingReference: null,
       referencePreloading: false,
       actions: {
@@ -27,7 +27,7 @@ const useReferenceStore = create<ReferenceStore>()(
       },
     }),
     {
-      name: 'tagging-schema-browser-reference',
+      name: 'tagging-schema-browser-reference-v2',
       partialize: (state) => ({ reference: state.reference }),
     },
   ),

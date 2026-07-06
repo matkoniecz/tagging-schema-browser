@@ -4,9 +4,6 @@ export const RELEASE_DATA_URL =
 /** Latest pre-release dist built from id-tagging-schema `interim` (GitHub Pages). */
 export const INTERIM_DATA_URL = 'https://openstreetmap.github.io/id-tagging-schema/dist/'
 
-/** @deprecated Use {@link INTERIM_DATA_URL}. Kept for persisted URLs and bookmarks. */
-export const INTEREM_DATA_URL = INTERIM_DATA_URL
-
 /** Same-origin fixture in `public/test-schema/` (Playwright e2e via `?dataUrl=/test-schema`). */
 export function bundledTestSchemaUrl(): string {
   const base = import.meta.env.BASE_URL.endsWith('/')
