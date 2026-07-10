@@ -1,4 +1,5 @@
 import type { FieldOptionTranslation } from '@/utils/fieldOptionTranslation'
+import type { LocationSet } from '@/utils/locationSet'
 import type { PrerequisiteTag } from '@/utils/prerequisiteTag'
 import type { SchemaBuildInfo } from '@/utils/schemaBuildVersion'
 
@@ -18,6 +19,8 @@ export type RawPreset = {
   matchScore?: number
   searchable?: boolean
   suggestion?: boolean
+  locationSet?: LocationSet
+  locationSetCrossReference?: string
 }
 
 export type RawFieldTranslation = {
@@ -58,6 +61,7 @@ export type RawField = {
   /** v6 only — removed from v7 dist after schema-builder dereferences at build time. */
   stringsCrossReference?: string
   prerequisiteTag?: PrerequisiteTag
+  locationSet?: LocationSet
 }
 
 export type RawFields = Record<string, RawField>
@@ -100,6 +104,8 @@ export type SchemaData = {
   fieldTranslations: FieldTranslations
   /** Detected schema major/version for the loaded dist. */
   schemaBuild: SchemaBuildInfo
+  /** Tag keys listed in `discarded.json` (removed from OSM). */
+  discarded: Record<string, boolean>
   loadError: string | null
   diagnostics: string[]
 }
