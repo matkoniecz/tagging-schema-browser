@@ -24,3 +24,22 @@ presets:
         - information
         - address
         - building_area_yes
+  amenity/atm:
+    fields:
+      parentId: amenity
+      missedFieldIds:
+        - amenity
+  man_made/adit:
+    fields:
+      parentId: man_made
+      missedFieldIds:
+        - man_made
+    moreFields:
+      parentId: man_made
+      missedFieldIds:
+        - material
+  boundary/administrative:
+    fields:
+      parentId: boundary
+      missedFieldIds:
+        - boundary
